@@ -1,6 +1,6 @@
 # snyk-issue-cli
 
-Simple Unix CLI to show security issues from Snyk for projects for our organisation
+:bug: Simple Unix CLI to show security issues from Snyk for projects for your organisation.
 
 ## Dependencies
 
@@ -16,7 +16,16 @@ Simple Unix CLI to show security issues from Snyk for projects for our organisat
 
 2. Create a file `api_token.txt` that contains your Snyk API key
 
-3. Create a file `org_id.txt` that contains the ID of your Snyk 'organisation'.
+3. Create a file `org_id.txt` that contains the ID of your Snyk 'organisation'. Note: you may have many such 'organisations', depending on how you use Snyk.
+
+You can get a list of your Snyk organisation IDs using curl:
+
+```
+curl --include \
+     --header "Content-Type: application/json; charset=utf-8" \
+     --header "Authorization: token <API_KEY>" \
+  'https://snyk.io/api/v1/orgs'
+```
 
 4. Create a file `jq_project_filter.txt` that contains a jq filter on your Snyk project names.
 
@@ -43,3 +52,7 @@ src/my-project(release/1.1):modeler/My.Project.One/My.Project.One.csproj
 "Vulnerability: Regular Expression Denial of Service (ReDoS) in RestSharp@105.0.1 - https://snyk.io/vuln/SNYK-DOTNET-RESTSHARP-1316436"
 "Vulnerability: Denial of Service (DoS) in RestSharp@105.0.1 - https://snyk.io/vuln/SNYK-DOTNET-RESTSHARP-1316436"
 ```
+
+## References
+
+- [Snyk API via curl](https://snyk.io/blog/using-the-snyk-api-to-get-your-vulnerabilities/)
