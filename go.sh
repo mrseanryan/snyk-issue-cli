@@ -10,7 +10,7 @@ _temp_file=./project_ids.txt.tmp
 #################################################
 # Assist projects!  (IDs and Names)
 # List projects in "AppDev Studio Pro" - Assist OR Mars OR DPA
-curl --request POST \
+curl --silent --request POST \
      --header "Content-Type: application/json" \
      --header "Authorization: token $_api_token" \
   "https://snyk.io/api/v1/org/$_org_id/projects" | jq ".projects[] | {name: .name, id: .id} | select(.name | $_jq_project_filter)" | jq '"\(.id);\(.name)"' > $_temp_file
