@@ -40,3 +40,6 @@ do
 	  | jq '"Vulnerability: \(.issues.vulnerabilities[].title) in \(.issues.vulnerabilities[].package)@\(.issues.vulnerabilities[].version) - \(.issues.vulnerabilities[].url)"'
 
 done < $_temp_file
+
+_project_count=`wc -l < project_ids.txt.tmp`
+echo $_project_count projects found
