@@ -27,17 +27,27 @@ do
 	pid=${arrIN[0]}
 	pname=${arrIN[1]}
 
-	_url=https://snyk.io/api/v1/org/$_org_id/project/$pid/issues
+	# note: the tutorial at https://snyk.io/blog/using-the-snyk-api-to-get-your-vulnerabilities/ uses /issues 
+	# but that stopped working and is not mentioned in the API docs! - see https://snyk.docs.apiary.io/#reference/projects/activate-an-individual-project/list-all-aggregated-issues
+	_url=https://snyk.io/api/v1/org/$_org_id/project/$pid/aggregated-issues
 
 	echo "---------"
 	echo $pname
-	# echo $_url
+
+	# xxx for debugging
+	#echo $_url
+	#curl --silent --request POST \
+	#   --header "Content-Type: application/json" \
+	#   --header "Authorization: token $_api_token" \
+	#   -d '{ "includeDescription": false, "includeIntroducedThrough": true }' \
+	#   $_url
 
 	curl --silent --request POST \
 	   --header "Content-Type: application/json" \
 	   --header "Authorization: token $_api_token" \
+	   -d '{ "includeDescription": false, "includeIntroducedThrough": true }' \
 	   $_url \
-	  | jq '"Vulnerability: \(.issues.vulnerabilities[].title) in \(.issues.vulnerabilities[].package)@\(.issues.vulnerabilities[].version) - \(.issues.vulnerabilities[].url)"'
+	  | jq '"Vulnerability: [\(.issues[].issueData.severity)] \(.issues[].id) \"\(.issues[].issueData.title)\" in \(.issues[].pkgName)@\(.issues[].pkgVersions)"'
 
 done < $_temp_file
 
